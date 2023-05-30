@@ -1,14 +1,12 @@
 use std::f64::consts::PI;
 
 use cairo::{self, Context};
-use pango;
 
 const RADIUS: f64 = 150_f64;
 const N_WORDS: i32 = 10;
 
 fn draw_text(content: &Context) {
     let pango_scale = pango::SCALE;
-    println!("{pango_scale}");
     content.translate(RADIUS, RADIUS);
     let pangolayout = pangocairo::create_layout(content);
     let mut desc = pango::FontDescription::new();
