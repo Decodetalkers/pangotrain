@@ -3,27 +3,54 @@ use cairo::{self, Context};
 fn draw_rectangle(content: &Context) {
     content.set_source_rgb(0.0, 0.0, 0.0);
     content.move_to(0.0, 0.0);
-    content.line_to(100.0, 100.0);
+    content.line_to(0.0, 150.0);
+    content.move_to(50.0, 0.0);
+    content.line_to(50.0, 150.0);
     content.move_to(100.0, 0.0);
-    content.line_to(0.0, 100.0);
-    content.set_line_width(2.0);
+    content.line_to(100.0, 150.0);
+    content.move_to(150.0, 0.0);
+    content.line_to(150.0, 150.0);
+
+    content.move_to(0.0, 0.0);
+    content.line_to(150.0, 0.0);
+    content.move_to(0.0, 50.0);
+    content.line_to(150.0, 50.0);
+    content.move_to(0.0, 100.0);
+    content.line_to(150.0, 100.0);
+    content.move_to(0.0, 150.0);
+    content.line_to(150.0, 150.0);
+
     content.stroke().unwrap();
 
-    content.rectangle(0.0, 0.0, 50.0, 50.0);
-    content.set_source_rgba(1.0, 0.0, 0.0, 0.8);
-    content.fill().unwrap();
+    let pangolayout = pangocairo::create_layout(content);
+    let mut desc = pango::FontDescription::new();
+    desc.set_family("Sans");
+    desc.set_weight(pango::Weight::Bold);
+    desc.set_size(27 * pango::SCALE);
+    pangolayout.set_font_description(Some(&desc));
 
-    content.rectangle(0.0, 50.0, 50.0, 50.0);
-    content.set_source_rgba(0.0, 1.0, 0.0, 0.6);
-    content.fill().unwrap();
+    pangolayout.set_text("0");
+    content.save().unwrap();
+    content.move_to(0.0, 0.0);
+    pangocairo::show_layout(content, &pangolayout);
+    content.restore().unwrap();
 
-    content.rectangle(50.0, 50.0, 50.0, 50.0);
-    content.set_source_rgba(0.0, 1.0, 1.0, 0.4);
-    content.fill().unwrap();
+    pangolayout.set_text("1");
+    content.save().unwrap();
+    content.move_to(50.0, 0.0);
+    pangocairo::show_layout(content, &pangolayout);
+    content.restore().unwrap();
+
+    pangolayout.set_text("2");
+    content.save().unwrap();
+    content.move_to(100.0, 0.0);
+    pangocairo::show_layout(content, &pangolayout);
+    content.restore().unwrap();
+
 }
 
 fn main() {
-    let surface = cairo::ImageSurface::create(cairo::Format::ARgb32, 100, 100).unwrap();
+    let surface = cairo::ImageSurface::create(cairo::Format::ARgb32, 150, 150).unwrap();
     let cr = cairo::Context::new(&surface).unwrap();
     cr.set_source_rgb(1_f64, 1_f64, 1_f64);
     cr.paint().unwrap();
